@@ -29,6 +29,7 @@
 
 import buildModuleUrl from '../Core/buildModuleUrl.js';
 import defineProperties from '../Core/defineProperties.js';
+import getWorkerUrl from '../Core/getWorkerUrl.js';
 
 var tmp = {};
 
@@ -399,7 +400,8 @@ var tmp = {};
 		}
 
 		if (obj.zip.useWebWorkers) {
-			worker = new Worker(obj.zip.workerScriptsPath + INFLATE_JS);
+            var url = getWorkerUrl(obj.zip.workerScriptsPath + INFLATE_JS)
+			worker = new Worker(url);
 			launchWorkerProcess(worker, reader, writer, offset, size, oninflateappend, onprogress, oninflateend, onreaderror, onwriteerror);
 		} else
 			launchProcess(new obj.zip.Inflater(), reader, writer, offset, size, oninflateappend, onprogress, oninflateend, onreaderror, onwriteerror);
@@ -424,7 +426,8 @@ var tmp = {};
 		}
 
 		if (obj.zip.useWebWorkers) {
-			worker = new Worker(obj.zip.workerScriptsPath + DEFLATE_JS);
+            var url = getWorkerUrl(obj.zip.workerScriptsPath + DEFLATE_JS)
+			worker = new Worker(url);
 			worker.addEventListener(MESSAGE_EVENT, onmessage, false);
 			worker.postMessage({
 				init : true,
